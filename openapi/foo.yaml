@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  title: Foo API
+  version: 1.0.0
+  description: A simple API for retrieving foos.
+servers:
+  - url: https://foo.example.com/api
+paths:
+  /foos:
+    get:
+      operationId: listFoos
+      summary: List foos
+      responses:
+        "200":
+          description: A list of foos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Foo"
+  /foos/{fooId}:
+    get:
+      operationId: getFoo
+      summary: Get a foo by ID
+      parameters:
+        - name: fooId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The requested foo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Foo"
+        "404":
+          description: Foo not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Foo:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          examples:
+            - foo_123
+        name:
+          type: string
+          examples:
+            - Example Foo
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string

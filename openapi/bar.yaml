@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  title: Bar API
+  version: 1.0.0
+  description: A simple API for listing and creating bars.
+servers:
+  - url: https://bar.example.com/api
+paths:
+  /bars:
+    get:
+      operationId: listBars
+      summary: List bars
+      responses:
+        "200":
+          description: A list of bars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bar"
+    post:
+      operationId: createBar
+      summary: Create a bar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBarRequest"
+      responses:
+        "201":
+          description: The created bar
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bar"
+components:
+  schemas:
+    Bar:
+      type: object
+      required:
+        - id
+        - label
+        - enabled
+      properties:
+        id:
+          type: string
+          examples:
+            - bar_123
+        label:
+          type: string
+          examples:
+            - Example Bar
+        enabled:
+          type: boolean
+          default: true
+    CreateBarRequest:
+      type: object
+      required:
+        - label
+      properties:
+        label:
+          type: string
+        enabled:
+          type: boolean
+          default: true
